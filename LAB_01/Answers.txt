@@ -1,1 +1,9 @@
 Trả lời các câu hỏi trong Lab_01:
+EX6.1:
+What happens if users choose "Cancel"?
+-Chương trình sẽ hiển thị thông báo: "You've chosen: No".
+How to allow users to choose only "Yes" and "No"?
+-Để giới hạn lựa chọn, thêm tham số 'JOptionPane.YES_NO_OPTION' vào trong hàm gọi hộp thoại.
+
+Exercise 6.4:
+- Leap year condition: (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0).
