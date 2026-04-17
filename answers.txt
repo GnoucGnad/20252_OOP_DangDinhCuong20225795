@@ -1,0 +1,10 @@
+Câu hỏi Mục 5: Sự khác biệt giữa Class member (biến static) và Instance member (biến thông thường) là gì?
+Trả lời: Class member (static nbDigitalVideoDiscs) được cấp phát bộ nhớ duy nhất một lần và dùng chung cho tất cả các đối tượng (objects) được tạo ra từ lớp đó. Nếu một đối tượng thay đổi giá trị này, mọi đối tượng khác đều thấy sự thay đổi.
+Instance member (id) được cấp phát bộ nhớ riêng biệt cho mỗi đối tượng khi đối tượng đó được tạo ra. Sự thay đổi giá trị biến instance của đối tượng này không ảnh hưởng đến đối tượng khác.
+
+Câu hỏi Mục 2: Làm sao Java có thể phân biệt được các phương thức có cùng tên (Method Overloading)?
+Trả lời: Java phân biệt được các phương thức nạp chồng (overloaded methods) thông qua danh sách tham số (Parameter List) hay còn gọi là Method Signature của chúng. Các phương thức cùng tên phải khác nhau về số lượng tham số, hoặc kiểu dữ liệu của tham số, hoặc thứ tự các kiểu dữ liệu.
+
+Câu hỏi Mục 3: Pass by Value hay Pass by Reference? Trả lời: Java luôn luôn là "Pass by Value" (Truyền theo giá trị).
+* Tại sao hàm swap(jungleDVD, cinderellaDVD) không làm thay đổi title?: Vì Java copy giá trị của tham chiếu (địa chỉ bộ nhớ) rồi ném vào hàm swap. Bên trong swap, các biến o1 và o2 trỏ chéo cho nhau, nhưng các biến gốc jungleDVD và cinderellaDVD ở ngoài hàm main thì hoàn toàn không bị ảnh hưởng.
+* Tại sao hàm changeTitle(jungleDVD...) lại đổi được title của JungleDVD?: Vì biến dvd trong hàm chứa bản copy trỏ đến cùng một vùng nhớ với jungleDVD. Khi gọi hàm dvd.setTitle(title), nó can thiệp trực tiếp vào dữ liệu trong vùng nhớ đó, nên bản gốc ở ngoài bị thay đổi. Tuy nhiên, dòng dvd = new DigitalVideoDisc(...) ở cuối hàm lại không có tác dụng ra bên ngoài vì nó chỉ trỏ biến copy sang một vùng nhớ mới.
