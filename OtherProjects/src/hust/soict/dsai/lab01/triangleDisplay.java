@@ -1,4 +1,4 @@
-package Exercise;
+package hust.soict.dsai.lab01;
 import java.util.Scanner;
 
 public class triangleDisplay {
