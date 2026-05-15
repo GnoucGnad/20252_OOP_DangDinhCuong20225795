@@ -1,119 +1,87 @@
 package hust.soict.dsai.aims.cart;
 
-import hust.soict.dsai.aims.disc.DigitalVideoDisc;
+import java.util.ArrayList;
+import java.util.Collections;
+import hust.soict.dsai.aims.media.Media;
 
 public class Cart {
-    public static final int MAX_NUMBERS_ORDERED = 20; // Sức chứa tối đa
-    private DigitalVideoDisc itemsOrdered[] = new DigitalVideoDisc[MAX_NUMBERS_ORDERED];
-    private int qtyOrdered = 0; // Số lượng đĩa đang có
+    // Thay thế mảng bằng ArrayList để chứa được cả Book, CD, DVD
+    private ArrayList<Media> itemsOrdered = new ArrayList<Media>();
 
-    // Thêm đĩa vào giỏ
-    public void addDigitalVideoDisc(DigitalVideoDisc disc) {
-        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
-            itemsOrdered[qtyOrdered] = disc;
-            qtyOrdered++;
-            System.out.println("Đã thêm đĩa '" + disc.getTitle() + "' vào giỏ hàng.");
+    // 1. Thêm một sản phẩm (Media) vào giỏ
+    public void addMedia(Media media) {
+        if (!itemsOrdered.contains(media)) {
+            itemsOrdered.add(media);
+            System.out.println("Đã thêm [" + media.getTitle() + "] vào giỏ hàng.");
         } else {
-            System.out.println("Giỏ hàng đã đầy! Không thể thêm.");
-        }
-    }
- // 1. Nạp chồng: Thêm một danh sách đĩa (Truyền vào một mảng)
-    public void addDigitalVideoDisc(DigitalVideoDisc[] dvdList) {
-        for (DigitalVideoDisc dvd : dvdList) {
-            if (qtyOrdered < MAX_NUMBERS_ORDERED) {
-                itemsOrdered[qtyOrdered] = dvd;
-                qtyOrdered++;
-                System.out.println("Đã thêm đĩa: " + dvd.getTitle() + " vào giỏ.");
-            } else {
-                System.out.println("Giỏ hàng đã đầy! Không thể thêm đĩa: " + dvd.getTitle());
-                break; // Thoát vòng lặp vì giỏ đã đầy
-            }
+            System.out.println("Sản phẩm [" + media.getTitle() + "] đã có trong giỏ hàng rồi!");
         }
     }
 
-    // 2. Nạp chồng: Thêm 2 đĩa cùng một lúc (Truyền vào 2 tham số)
-    public void addDigitalVideoDisc(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
-        // Thêm đĩa thứ 1
-        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
-            itemsOrdered[qtyOrdered] = dvd1;
-            qtyOrdered++;
-            System.out.println("Đã thêm đĩa: " + dvd1.getTitle() + " vào giỏ.");
+    // 2. Xóa một sản phẩm khỏi giỏ
+    public void removeMedia(Media media) {
+        if (itemsOrdered.contains(media)) {
+            itemsOrdered.remove(media);
+            System.out.println("Đã xóa [" + media.getTitle() + "] khỏi giỏ hàng.");
         } else {
-            System.out.println("Giỏ hàng đã đầy! Không thể thêm đĩa: " + dvd1.getTitle());
-        }
-
-        // Thêm đĩa thứ 2
-        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
-            itemsOrdered[qtyOrdered] = dvd2;
-            qtyOrdered++;
-            System.out.println("Đã thêm đĩa: " + dvd2.getTitle() + " vào giỏ.");
-        } else {
-            System.out.println("Giỏ hàng đã đầy! Không thể thêm đĩa: " + dvd2.getTitle());
+            System.out.println("Không tìm thấy sản phẩm [" + media.getTitle() + "] để xóa.");
         }
     }
 
-    // Xóa đĩa khỏi giỏ (Logic dồn mảng)
-    public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
-        for (int i = 0; i < qtyOrdered; i++) {
-            if (itemsOrdered[i] == disc) { // Tìm thấy đĩa cần xóa
-                // Dồn các đĩa phía sau lên trước 1 bậc để lấp chỗ trống
-                for (int j = i; j < qtyOrdered - 1; j++) {
-                    itemsOrdered[j] = itemsOrdered[j + 1];
-                }
-                itemsOrdered[qtyOrdered - 1] = null; // Xóa phần tử thừa ở cuối
-                qtyOrdered--; // Giảm số lượng đi 1
-                System.out.println("Đã xóa đĩa '" + disc.getTitle() + "' khỏi giỏ hàng.");
-                return; // Thoát hàm sau khi xóa xong
-            }
-        }
-        System.out.println("Không tìm thấy đĩa trong giỏ hàng.");
-    }
-
-    // Tính tổng tiền
+    // 3. Tính tổng tiền (Sử dụng vòng lặp duyệt ArrayList)
     public float totalCost() {
         float total = 0;
-        for (int i = 0; i < qtyOrdered; i++) {
-            total += itemsOrdered[i].getCost();
+        for (Media media : itemsOrdered) {
+            total += media.getCost();
         }
         return total;
     }
- // In danh sách đĩa trong giỏ hàng
+
+    // 4. In danh sách giỏ hàng (Tận dụng toString() đa hình)
     public void print() {
         System.out.println("***********************CART***********************");
         System.out.println("Ordered Items:");
-        for (int i = 0; i < qtyOrdered; i++) {
-            System.out.println((i + 1) + ". " + itemsOrdered[i].toString());
+        int i = 1;
+        for (Media media : itemsOrdered) {
+            System.out.println(i + ". " + media.toString());
+            i++;
         }
-        System.out.println("Total cost: " + totalCost());
+        System.out.println("Total cost: " + totalCost() + " $");
         System.out.println("***************************************************");
     }
 
-    // Tìm kiếm theo ID
-    public void search(int id) {
-        boolean found = false;
-        for (int i = 0; i < qtyOrdered; i++) {
-            if (itemsOrdered[i].getId() == id) {
-                System.out.println("Tìm thấy: " + itemsOrdered[i].toString());
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("Không tìm thấy đĩa nào có ID: " + id);
-        }
-    }
-
-    // Tìm kiếm theo Tiêu đề
+    // 5. Tìm kiếm theo Tiêu đề (Search by Title)
     public void search(String title) {
         boolean found = false;
-        for (int i = 0; i < qtyOrdered; i++) {
-            if (itemsOrdered[i].isMatch(title)) {
-                System.out.println("Tìm thấy: " + itemsOrdered[i].toString());
+        for (Media media : itemsOrdered) {
+            if (media.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                System.out.println("Tìm thấy: " + media.toString());
                 found = true;
             }
         }
-        if (!found) {
-            System.out.println("Không tìm thấy đĩa nào có tiêu đề: " + title);
-        }
+        if (!found) System.out.println("Không tìm thấy sản phẩm nào có tiêu đề: " + title);
+    }
+
+    // 6. Sắp xếp giỏ hàng theo Tiêu đề rồi đến Giá
+    public void sortByTitleCost() {
+        Collections.sort(itemsOrdered, Media.COMPARE_BY_TITLE_COST);
+        System.out.println("Đã sắp xếp giỏ hàng theo Tiêu đề -> Giá.");
+    }
+
+    // 7. Sắp xếp giỏ hàng theo Giá rồi đến Tiêu đề
+    public void sortByCostTitle() {
+        Collections.sort(itemsOrdered, Media.COMPARE_BY_COST_TITLE);
+        System.out.println("Đã sắp xếp giỏ hàng theo Giá -> Tiêu đề.");
+    }
+    
+    // Hàm bổ trợ để lấy số lượng món hàng (Dùng cho Menu sau này)
+    public int getQtyOrdered() {
+        return itemsOrdered.size();
+    }
+    
+    // Hàm xóa toàn bộ giỏ hàng (Sau khi đặt hàng thành công)
+    public void clear() {
+        itemsOrdered.clear();
+        System.out.println("Giỏ hàng đã được làm trống.");
     }
 }

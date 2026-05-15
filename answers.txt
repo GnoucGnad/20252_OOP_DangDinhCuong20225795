@@ -8,3 +8,20 @@ Trả lời: Java phân biệt được các phương thức nạp chồng (over
 Câu hỏi Mục 3: Pass by Value hay Pass by Reference? Trả lời: Java luôn luôn là "Pass by Value" (Truyền theo giá trị).
 * Tại sao hàm swap(jungleDVD, cinderellaDVD) không làm thay đổi title?: Vì Java copy giá trị của tham chiếu (địa chỉ bộ nhớ) rồi ném vào hàm swap. Bên trong swap, các biến o1 và o2 trỏ chéo cho nhau, nhưng các biến gốc jungleDVD và cinderellaDVD ở ngoài hàm main thì hoàn toàn không bị ảnh hưởng.
 * Tại sao hàm changeTitle(jungleDVD...) lại đổi được title của JungleDVD?: Vì biến dvd trong hàm chứa bản copy trỏ đến cùng một vùng nhớ với jungleDVD. Khi gọi hàm dvd.setTitle(title), nó can thiệp trực tiếp vào dữ liệu trong vùng nhớ đó, nên bản gốc ở ngoài bị thay đổi. Tuy nhiên, dòng dvd = new DigitalVideoDisc(...) ở cuối hàm lại không có tác dụng ra bên ngoài vì nó chỉ trỏ biến copy sang một vùng nhớ mới.
+Lab04:
+Trả lời câu hỏi phần 11:
+-Những gì xảy ra: Mặc dù biến chạy m trong vòng lặp được khai báo là kiểu cha Media, nhưng khi gọi hàm m.toString(), kết quả in ra màn hình lại hiển thị đúng định dạng chuỗi riêng biệt của từng lớp con (Book, CompactDisc, DigitalVideoDisc).
+-Giải thích: Bài tập này minh họa tính đa hình ở cấp độ hành vi. Trong Java, khi gọi một phương thức đã bị ghi đè (overridden) như toString(), hệ thống sẽ tùy thuộc vào loại đối tượng thực tế tại thời điểm chạy (runtime) để thực thi phương thức tương ứng của lớp con đó, chứ không gọi phương thức của lớp cha.
+Giải thích về hiện tượng đa hình khi chạy PolymorphismTest:
+-Hiện tượng quan sát thấy:Trong file PolymorphismTest, chúng ta tạo ra một danh sách List<Media> mediae và thêm vào đó các đối tượng thuộc các lớp con khác nhau: DigitalVideoDisc, CompactDisc, và Book.
+-Giải thích: Đây chính là minh chứng cho tính Đa hình trong thời gian chạy (Runtime Polymorphism), cụ thể là cơ chế Ghi đè phương thức (Method Overriding):
+
+      
+   +Tính đa hình: Cho phép một biến kiểu cha trỏ đến các đối tượng của các lớp con khác nhau. Ở đây, Media là kiểu tham chiếu, nhưng đối tượng thực tế trong bộ nhớ có thể là Book hoặc DVD.
+
+   +Liên kết muộn (Dynamic Binding): Java không quyết định hàm toString() nào được gọi tại thời điểm biên dịch (Compile-time). Thay vào đó, khi chương trình đang chạy (Runtime), máy ảo Java (JVM) sẽ kiểm tra xem đối tượng thực sự mà biến m đang trỏ tới là gì.
+
+   +Nếu m đang trỏ tới một đối tượng Book, nó sẽ gọi hàm toString() của lớp Book.
+
+   +Nếu m đang trỏ tới một đối tượng DigitalVideoDisc, nó sẽ gọi hàm toString() của lớp DigitalVideoDisc.
+Kết luận: Nhờ có đa hình, chúng ta có thể quản lý danh sách các sản phẩm khác nhau một cách thống nhất thông qua lớp cha Media, nhưng vẫn đảm bảo mỗi sản phẩm giữ được hành vi đặc trưng riêng của nó.

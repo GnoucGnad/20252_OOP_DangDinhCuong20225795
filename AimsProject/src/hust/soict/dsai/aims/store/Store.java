@@ -1,41 +1,48 @@
 package hust.soict.dsai.aims.store;
-import hust.soict.dsai.aims.disc.DigitalVideoDisc;
+
+import java.util.ArrayList;
+import hust.soict.dsai.aims.media.Media;
 
 public class Store {
-    // Sức chứa của kho hàng (Lớn hơn giỏ hàng nhiều)
-    public static final int MAX_ITEMS_IN_STORE = 1000;
-    private DigitalVideoDisc[] itemsInStore = new DigitalVideoDisc[MAX_ITEMS_IN_STORE];
-    private int qtyInStore = 0;
+    // Thay vì dùng mảng DVD[], ta dùng ArrayList<Media> để chứa được cả Book, CD, DVD
+    private ArrayList<Media> itemsInStore = new ArrayList<Media>();
 
-    // Quản lý thêm đĩa vào kho
-    public void addDVD(DigitalVideoDisc dvd) {
-        if (qtyInStore < MAX_ITEMS_IN_STORE) {
-            itemsInStore[qtyInStore] = dvd;
-            qtyInStore++;
-            System.out.println("Đã thêm đĩa '" + dvd.getTitle() + "' vào kho hàng.");
+    // Hàm thêm một sản phẩm bất kỳ (Book, CD, DVD) vào cửa hàng
+    public void addMedia(Media media) {
+        if (!itemsInStore.contains(media)) {
+            itemsInStore.add(media);
+            System.out.println("Đã thêm [" + media.getTitle() + "] vào cửa hàng.");
         } else {
-            System.out.println("Kho hàng đã đầy!");
+            System.out.println("Sản phẩm [" + media.getTitle() + "] đã có sẵn trong cửa hàng.");
         }
     }
 
-    // Quản lý xóa đĩa khỏi kho
-    public void removeDVD(DigitalVideoDisc dvd) {
-        boolean found = false;
-        for (int i = 0; i < qtyInStore; i++) {
-            if (itemsInStore[i] == dvd) {
-                found = true;
-                // Dồn mảng lấp chỗ trống
-                for (int j = i; j < qtyInStore - 1; j++) {
-                    itemsInStore[j] = itemsInStore[j + 1];
-                }
-                itemsInStore[qtyInStore - 1] = null;
-                qtyInStore--;
-                System.out.println("Đã xóa đĩa '" + dvd.getTitle() + "' khỏi kho hàng.");
-                break;
+    // Hàm xóa một sản phẩm bất kỳ khỏi cửa hàng
+    public void removeMedia(Media media) {
+        if (itemsInStore.contains(media)) {
+            itemsInStore.remove(media);
+            System.out.println("Đã xóa [" + media.getTitle() + "] khỏi cửa hàng.");
+        } else {
+            System.out.println("Không tìm thấy sản phẩm [" + media.getTitle() + "] trong cửa hàng.");
+        }
+    }
+ // Hàm in danh sách sản phẩm trong cửa hàng ra màn hình
+    public void print() {
+        System.out.println("***********************STORE***********************");
+        System.out.println("Các sản phẩm đang có trong cửa hàng:");
+        for (Media media : itemsInStore) {
+            System.out.println("- " + media.toString());
+        }
+        System.out.println("***************************************************");
+    }
+
+    // Hàm tìm kiếm và trả về một sản phẩm dựa vào Tiêu đề (Title)
+    public Media fetchMedia(String title) {
+        for (Media media : itemsInStore) {
+            if (media.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                return media; // Trả về sản phẩm nếu tìm thấy
             }
         }
-        if (!found) {
-            System.out.println("Không tìm thấy đĩa '" + dvd.getTitle() + "' trong kho!");
-        }
+        return null; // Trả về null nếu không tìm thấy
     }
 }
