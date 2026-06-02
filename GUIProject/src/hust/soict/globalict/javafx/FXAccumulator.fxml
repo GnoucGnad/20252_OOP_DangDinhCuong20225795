@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+
+<!--
+    FXML cho FXAccumulator: GridPane 2x2 tương tự SwingAccumulator.
+    Hàng 1: Label "Enter an Integer" + TextField nhập số.
+    Hàng 2: Label "The Accumulated Sum is" + TextField hiển thị tổng (không chỉnh sửa).
+    Controller: hust.soict.globalict.javafx.FXAccumulator (gộp cả launcher và controller).
+-->
+<GridPane hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml"
+          fx:controller="hust.soict.globalict.javafx.FXAccumulator">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <!-- Hàng 1: Nhập số -->
+    <Label text="Enter an Integer: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="tfInput" onAction="#handleInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <!-- Hàng 2: Hiển thị tổng -->
+    <Label text="The Accumulated Sum is: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="tfOutput" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+</GridPane>
